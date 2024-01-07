@@ -14,12 +14,16 @@ function luckyDraw(player) {
 const players = ['Joe', 'Caroline', 'Sabrina'];
 
 
-players.map((player) => {
-  return luckyDraw(player)
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((error) => {
-      console.error(error.message);
-    });
-});
+async function luckyDrawPlayers(players) {
+    try {
+      const draw = players.map((player)=> luckyDraw(player))
+      const result = await Promise.all(draw)
+      result.forEach((result) => {
+        console.log(result);
+      });
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  luckyDrawPlayers(players)
