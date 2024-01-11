@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import "express-async-errors";
-import { getAll, getOnebyID ,create, delatebyID, updatebyID } from "./controller/planets";
+import { getAll, getOnebyID ,create, delatebyID, updatebyID, setUpDb } from "./controller/planets";
 
 const app = express();
 const port = 3000;
@@ -19,6 +19,8 @@ app.put("/api/planets/:id",updatebyID);
 
 app.delete("/api/planets/:id",delatebyID);
 
-app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
+setUpDb().then(() => {
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
 });
