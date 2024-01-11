@@ -3,7 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "outDir": "./dist",
-    "module": "es6",
+    "module": "commonjs",
     "target": "ES6"
   },
   "include": ["./src/**/*.ts"],
