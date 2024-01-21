@@ -1,28 +1,8 @@
 import { Request, Response } from "express";
 import pgPromise from "pg-promise";
+import{db} from './../db.js'
 
-const db = pgPromise()("postgres://postgres:omc700xn5@localhost:5432/planets");
 
-/* SetUp db */
-const setUpDb = async () => {
-  try {
-    console.log("Dropping and creating table...");
-    await db.none(`
-      DROP TABLE IF EXISTS planets;
-      CREATE TABLE planets (
-        id SERIAL NOT NULL PRIMARY KEY,
-        name TEXT NOT NULL
-      );
-    `);
-
-    console.log("Inserting data into the table...");
-    await db.none(`INSERT INTO planets(name) VALUES('Earth')`);
-    await db.none(`INSERT INTO planets(name) VALUES('Mars')`);
-    console.log("Database setup successful!");
-  } catch (error) {
-    console.error("Error setting up database:", error);
-  }
-};
 
 const getAll = async (req: Request, res: Response) => {
   try {
@@ -69,4 +49,4 @@ const delatebyID = (req: Request, res: Response) => {
   res.status(200).json({ msg: "planet deleted" });
 };
 
-export { getAll, create, delatebyID, updatebyID, getOnebyID, setUpDb};
+export { getAll, create, delatebyID, updatebyID, getOnebyID};

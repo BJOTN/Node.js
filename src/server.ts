@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import "express-async-errors";
 import { getAll, getOnebyID ,create, delatebyID, updatebyID, setUpDb } from "./controller/planets";
-
+import { login } from "./controller/user";
 const app = express();
 const port = 3000;
 
@@ -18,6 +18,11 @@ app.post("/api/planets",create);
 app.put("/api/planets/:id",updatebyID);
 
 app.delete("/api/planets/:id",delatebyID);
+
+app.post('/api/users/signup', signUp)
+
+app.post('/api/users/signup', login)
+
 
 setUpDb().then(() => {
   app.listen(port, () => {
