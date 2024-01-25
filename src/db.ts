@@ -31,4 +31,4 @@ const setUpDb = async () => {
   }
 };
 setUpDb();
-export {db}
+export {db, setUpDb}

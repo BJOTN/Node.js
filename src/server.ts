@@ -1,28 +1,20 @@
 import express from "express";
 import morgan from "morgan";
 import "express-async-errors";
-import { getAll, getOnebyID ,create, delatebyID, updatebyID, setUpDb } from "./controller/planets";
-import { login } from "./controller/user";
+
+import { login, logout, signUp } from "./controller/user";
+import { db, setUpDb } from "./db";
+import { authorize } from "./authorize";
+
 const app = express();
 const port = 3000;
 
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.get("/api/planets",getAll);
-
-app.get("/api/planets/:id",getOnebyID);
-
-app.post("/api/planets",create);
-
-app.put("/api/planets/:id",updatebyID);
-
-app.delete("/api/planets/:id",delatebyID);
-
-app.post('/api/users/signup', signUp)
-
-app.post('/api/users/signup', login)
-
+app.post('/api/users/signup', signUp);
+app.post('/api/users/login', login);
+app.get('/api/users/logout', authorize, logout);
 
 setUpDb().then(() => {
   app.listen(port, () => {

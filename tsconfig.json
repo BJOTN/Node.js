@@ -3,7 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "outDir": "./dist",
-    "module": "commonjs",
+    "module": "Es6",
     "target": "ES6",
     "esModuleInterop": true
   },
