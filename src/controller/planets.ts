@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import pgPromise from "pg-promise";
+import multer from "multer";
 
 const db = pgPromise()("postgres://postgres:omc700xn5@localhost:5432/planets");
 
@@ -12,6 +13,7 @@ const setUpDb = async () => {
       CREATE TABLE planets (
         id SERIAL NOT NULL PRIMARY KEY,
         name TEXT NOT NULL
+        image TEXT
       );
     `);
 
@@ -69,4 +71,34 @@ const delatebyID = (req: Request, res: Response) => {
   res.status(200).json({ msg: "planet deleted" });
 };
 
-export { getAll, create, delatebyID, updatebyID, getOnebyID, setUpDb};
+const updateImageById = async (req: Request, res: Response) => {
+  const planetId = parseInt(req.params.id, 10);
+
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
+  }
+
+  const imagePath = req.file?.path;
+
+  try {
+    await db.none("UPDATE planets SET image = $1 WHERE id = $2", [
+      imagePath,
+      planetId,
+    ]);
+    res.status(200).json({ msg: "Planet image updated successfully" });
+  } catch (error) {
+    res.status(404).json({ error: "Planet not found" });
+  }
+};
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/");
+  },
+  filename: (req, file, cb) => {
+    console.log(file.originalname);
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage });
+export { getAll, create, delatebyID, updatebyID, getOnebyID, setUpDb,updateImageById, upload};
